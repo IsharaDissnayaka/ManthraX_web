@@ -1,0 +1,973 @@
+[
+    {
+        "id": "18feed72f7fc5d88",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f6eddcb8a7379006",
+        "type": "debug",
+        "z": "18feed72f7fc5d88",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 530,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "8378bced149493c3",
+        "type": "firebase.on",
+        "z": "18feed72f7fc5d88",
+        "name": "Firebase",
+        "firebaseconfig": "",
+        "childpath": "/Users/NZmOLrVGVthBqjAmnMBKVwIw05w1",
+        "atStart": true,
+        "eventType": "value",
+        "queries": [],
+        "x": 260,
+        "y": 140,
+        "wires": [
+            [
+                "f6eddcb8a7379006",
+                "1c95865070e65917",
+                "7e7d106fdb8af9a0",
+                "07e53a93d62174d1"
+            ]
+        ]
+    },
+    {
+        "id": "1c95865070e65917",
+        "type": "function",
+        "z": "18feed72f7fc5d88",
+        "name": "Extract Values",
+        "func": "// // Correctly extract each value\n// let data = msg.payload[\"NZmOLrVGVthBqjAmnMBKVwIw05w1\"];\n\n// let current = data.Current || 0;\n// let energy = data.Energy || 0;\n// let power = data.Power || 0;\n// let voltage = data.Voltage || 0;\n\n// return [\n//     { payload: current },\n//     { payload: energy },\n//     { payload: power },\n//     { payload: voltage }\n// ];\n// Safe extraction from msg.payload\nlet data = msg.payload || {};\n\nlet current = data.Current ?? 0;\nlet energy = data.Energy ?? 0;\nlet power = data.Power ?? 0;\nlet voltage = data.Voltage ?? 0;\n\n// Send to 4 outputs for the gauges\nreturn [\n    { payload: current },\n    { payload: energy },\n    { payload: power },\n    { payload: voltage }\n];\n",
+        "outputs": 4,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 280,
+        "wires": [
+            [
+                "c085954e20baf915"
+            ],
+            [
+                "a25a4a3babcc757f"
+            ],
+            [
+                "5a8d02d97f64d973"
+            ],
+            [
+                "a0b12d1c56acc6d4"
+            ]
+        ]
+    },
+    {
+        "id": "c085954e20baf915",
+        "type": "ui_gauge",
+        "z": "18feed72f7fc5d88",
+        "name": "Current",
+        "group": "dashboardGroup",
+        "order": 1,
+        "width": 6,
+        "height": 7,
+        "gtype": "gage",
+        "title": "Current",
+        "label": "A",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 50,
+        "colors": [
+            "#1e90ff",
+            "#00ff00",
+            "#ff0000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 780,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "a25a4a3babcc757f",
+        "type": "ui_gauge",
+        "z": "18feed72f7fc5d88",
+        "name": "Energy",
+        "group": "dashboardGroup",
+        "order": 2,
+        "width": 6,
+        "height": 7,
+        "gtype": "gage",
+        "title": "Energy",
+        "label": "kWh",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "500",
+        "colors": [
+            "#800080",
+            "#ff69b4",
+            "#ff0000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 780,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "5a8d02d97f64d973",
+        "type": "ui_gauge",
+        "z": "18feed72f7fc5d88",
+        "name": "Power",
+        "group": "dashboardGroup",
+        "order": 3,
+        "width": 6,
+        "height": 7,
+        "gtype": "gage",
+        "title": "Power",
+        "label": "W",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 5000,
+        "colors": [
+            "#00ff00",
+            "#ffff00",
+            "#ff0000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 780,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "a0b12d1c56acc6d4",
+        "type": "ui_gauge",
+        "z": "18feed72f7fc5d88",
+        "name": "Voltage",
+        "group": "dashboardGroup",
+        "order": 4,
+        "width": 6,
+        "height": 7,
+        "gtype": "gage",
+        "title": "Voltage",
+        "label": "V",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "300",
+        "colors": [
+            "#0000ff",
+            "#ffff00",
+            "#ff0000"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 780,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "7e7d106fdb8af9a0",
+        "type": "function",
+        "z": "18feed72f7fc5d88",
+        "name": "Extract + Format for MongoDB",
+        "func": "// Safely extract data\nlet data = msg.payload || {};\n\nlet current = data.Current ?? 0;\nlet energy = data.Energy ?? 0;\nlet power = data.Power ?? 0;\nlet voltage = data.Voltage ?? 0;\n\nlet reading = {\n    current: current,\n    energy: energy,\n    power: power,\n    voltage: voltage,\n    timestamp: new Date()\n};\n\n// Get existing buffer and start time\nlet buffer = flow.get(\"dataBuffer\") || [];\nlet startTime = flow.get(\"startTime\");\n\n// Add new reading\nbuffer.push(reading);\n\n// Initialize start time if not set\nif (!startTime) {\n    startTime = new Date().getTime();\n    flow.set(\"startTime\", startTime);\n}\n\n// Check if 5 minutes (300000 ms) passed\nlet now = new Date().getTime();\nif ((now - startTime) >= 300000) {\n    // Calculate averages\n    let total = buffer.reduce((acc, val) => {\n        acc.current += val.current;\n        acc.energy += val.energy;\n        acc.power += val.power;\n        acc.voltage += val.voltage;\n        return acc;\n    }, { current: 0, energy: 0, power: 0, voltage: 0 });\n\n    let count = buffer.length;\n    let avg = {\n        current: total.current / count,\n        energy: total.energy / count,\n        power: total.power / count,\n        voltage: total.voltage / count,\n        timestamp: new Date()\n    };\n\n    // Reset buffer and timer\n    flow.set(\"dataBuffer\", []);\n    flow.set(\"startTime\", now);\n\n    msg.payload = avg;  // Send average to MongoDB\n    return msg;\n} else {\n    // Update buffer, skip sending\n    flow.set(\"dataBuffer\", buffer);\n    return null;\n}\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 590,
+        "y": 380,
+        "wires": [
+            [
+                "8017df0d81e93db5"
+            ]
+        ]
+    },
+    {
+        "id": "8339cb790d729375",
+        "type": "debug",
+        "z": "18feed72f7fc5d88",
+        "name": "Mongo Debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "8017df0d81e93db5",
+        "type": "mongodb3 in",
+        "z": "18feed72f7fc5d88",
+        "service": "_ext_",
+        "configNode": "7a8d1c9c79f9c033",
+        "name": "energyDB",
+        "collection": "energyDB",
+        "operation": "insert",
+        "x": 880,
+        "y": 380,
+        "wires": [
+            [
+                "8339cb790d729375"
+            ]
+        ]
+    },
+    {
+        "id": "3196a5252aa12781",
+        "type": "inject",
+        "z": "18feed72f7fc5d88",
+        "name": "Trigger Fetch",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 380,
+        "y": 500,
+        "wires": [
+            [
+                "156f7ca3cb7d1b20"
+            ]
+        ]
+    },
+    {
+        "id": "156f7ca3cb7d1b20",
+        "type": "function",
+        "z": "18feed72f7fc5d88",
+        "name": "Prepare Mongo Query",
+        "func": "msg.collection = \"energyDB\";\nmsg.payload = {};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 620,
+        "y": 500,
+        "wires": [
+            [
+                "d7e1fb1bf78a1ab7"
+            ]
+        ]
+    },
+    {
+        "id": "d7e1fb1bf78a1ab7",
+        "type": "mongodb in",
+        "z": "18feed72f7fc5d88",
+        "mongodb": "54e6f01a3c8e7a6b",
+        "name": "Fetch Energy",
+        "collection": "energyDB",
+        "operation": "find",
+        "x": 850,
+        "y": 500,
+        "wires": [
+            [
+                "e128ea794c03695b",
+                "c237070290748c1d",
+                "f067c4ba1c703eae",
+                "cc1e9e222c72bc5e"
+            ]
+        ]
+    },
+    {
+        "id": "219fa1ead4c7d024",
+        "type": "http request",
+        "z": "18feed72f7fc5d88",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://127.0.0.1:5000/predict",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 930,
+        "y": 20,
+        "wires": [
+            [
+                "2e9d4770211e5b11",
+                "d3cb02f5645ed528"
+            ]
+        ]
+    },
+    {
+        "id": "2e9d4770211e5b11",
+        "type": "debug",
+        "z": "18feed72f7fc5d88",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1420,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "07e53a93d62174d1",
+        "type": "function",
+        "z": "18feed72f7fc5d88",
+        "name": "Send to Flask for Prediction",
+        "func": "msg.headers = { \"Content-Type\": \"application/json\" };\n\nmsg.payload = {\n    voltage: msg.payload.Voltage,\n    current: msg.payload.Current,\n    power: msg.payload.Power,\n    hour: new Date().getHours(),\n    rolling_power_avg: msg.payload.Power  // optional\n};\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 20,
+        "wires": [
+            [
+                "219fa1ead4c7d024"
+            ]
+        ]
+    },
+    {
+        "id": "d3cb02f5645ed528",
+        "type": "function",
+        "z": "18feed72f7fc5d88",
+        "name": "Extract Predictions",
+        "func": "let p = msg.payload;\n\nreturn [\n    { payload: p.predicted_energy.toFixed(2) },\n    { payload: p.predicted_hourly_energy.toFixed(2) },\n    { payload: p.predicted_daily_energy.toFixed(2) },\n    { payload: p.predicted_weekly_energy.toFixed(2) },\n    { payload: p.predicted_monthly_energy.toFixed(2) },\n    { payload: (p.predicted_daily_cost / 5000.00).toFixed(2) + \" LKR\" },\n    { payload: (p.predicted_weekly_cost/12000.00).toFixed(2) + \" LKR\" },\n    { payload: (p.predicted_monthly_cost/600.00).toFixed(2) + \" LKR\" },\n    { payload: (p.appliances_detected || [\"None\"]).join(\", \") }\n];\n",
+        "outputs": 9,
+        "timeout": "1",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 100,
+        "wires": [
+            [
+                "4efb421f4e9d096a"
+            ],
+            [
+                "842dfc6e0ee79b55"
+            ],
+            [
+                "5c50d5551c3a3966"
+            ],
+            [
+                "c0414eb4f4e731c1"
+            ],
+            [
+                "28c34bec0be333fa"
+            ],
+            [
+                "6be8017a7b06331e"
+            ],
+            [
+                "5dbe867afa57ac71"
+            ],
+            [
+                "f9960c01e72302af"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "4efb421f4e9d096a",
+        "type": "ui_gauge",
+        "z": "18feed72f7fc5d88",
+        "name": "",
+        "group": "d914bf28fc662082",
+        "order": 1,
+        "width": 12,
+        "height": 7,
+        "gtype": "gage",
+        "title": "Predicted Energy",
+        "label": "kWh",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "200",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1450,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "842dfc6e0ee79b55",
+        "type": "ui_gauge",
+        "z": "18feed72f7fc5d88",
+        "name": "",
+        "group": "d914bf28fc662082",
+        "order": 2,
+        "width": 6,
+        "height": 6,
+        "gtype": "gage",
+        "title": "Predicted Hourly Energy",
+        "label": "kWh",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1470,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "5c50d5551c3a3966",
+        "type": "ui_gauge",
+        "z": "18feed72f7fc5d88",
+        "name": "",
+        "group": "d914bf28fc662082",
+        "order": 3,
+        "width": 6,
+        "height": 6,
+        "gtype": "gage",
+        "title": "Predicted Daily Energy",
+        "label": "kWh",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "1000000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1460,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "c0414eb4f4e731c1",
+        "type": "ui_gauge",
+        "z": "18feed72f7fc5d88",
+        "name": "",
+        "group": "d914bf28fc662082",
+        "order": 4,
+        "width": 6,
+        "height": 6,
+        "gtype": "gage",
+        "title": "Predicted Week Energy",
+        "label": "kWh",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "10000000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1470,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "28c34bec0be333fa",
+        "type": "ui_gauge",
+        "z": "18feed72f7fc5d88",
+        "name": "",
+        "group": "d914bf28fc662082",
+        "order": 5,
+        "width": 6,
+        "height": 6,
+        "gtype": "gage",
+        "title": "Predicted Monthly Energy",
+        "label": "kWh",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "10000000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 1470,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "6be8017a7b06331e",
+        "type": "ui_text",
+        "z": "18feed72f7fc5d88",
+        "group": "4b01fda7e23e1683",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Predicted Daily Cost",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": true,
+        "font": "Verdana,Verdana,Geneva,sans-serif",
+        "fontSize": "21",
+        "color": "#0f9939",
+        "x": 1460,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "5dbe867afa57ac71",
+        "type": "ui_text",
+        "z": "18feed72f7fc5d88",
+        "group": "4b01fda7e23e1683",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Predicted Weekly Cost",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": true,
+        "font": "Verdana,Verdana,Geneva,sans-serif",
+        "fontSize": "21",
+        "color": "#0f9939",
+        "x": 1460,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "f9960c01e72302af",
+        "type": "ui_text",
+        "z": "18feed72f7fc5d88",
+        "group": "4b01fda7e23e1683",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Predicted Monthly Cost",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": true,
+        "font": "Verdana,Verdana,Geneva,sans-serif",
+        "fontSize": "21",
+        "color": "#0f9939",
+        "x": 1470,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "e128ea794c03695b",
+        "type": "function",
+        "z": "18feed72f7fc5d88",
+        "name": "function 2",
+        "func": "let data = msg.payload;\nlet labels = [], currentValues = [], originalTimestamps = [];\n\ndata.forEach(doc => {\n    if (doc.timestamp && doc.current !== undefined) {\n        const originalTimestamp = doc.timestamp;\n        //const time = new Date(originalTimestamp).toLocaleTimeString(\"en-US\", { hour12: false });\n        const time = new Date(originalTimestamp).toLocaleString(\"en-US\", {\n            year: \"numeric\",\n            month: \"2-digit\",\n            day: \"2-digit\",\n            hour: \"2-digit\",\n            minute: \"2-digit\",\n            second: \"2-digit\",\n            hour12: false\n        });\n\n        const current = (doc.current >= 0 && doc.current < 1000) ? doc.current : 0;\n\n        labels.push(time);\n        currentValues.push(current);\n    }\n});\n\nmsg.payload = [\n    {\n        series: [\"Current\"],\n        data: [currentValues],\n        labels: labels\n    }\n];\n\nmsg.topic = \"Current\";\nmsg.ui_control = { options: { responsive: true } };\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 500,
+        "wires": [
+            [
+                "e00b5c36e10b90c7"
+            ]
+        ]
+    },
+    {
+        "id": "c237070290748c1d",
+        "type": "function",
+        "z": "18feed72f7fc5d88",
+        "name": "function 3",
+        "func": "let data = msg.payload;\nlet labels = [], energyValues = [], originalTimestamps = [];\n\ndata.forEach(doc => {\n    if (doc.timestamp && doc.energy !== undefined) {\n        const originalTimestamp = doc.timestamp;\n        //const time = new Date(originalTimestamp).toLocaleTimeString(\"en-US\", { hour12: false });\n                const time = new Date(originalTimestamp).toLocaleString(\"en-US\", {\n            year: \"numeric\",\n            month: \"2-digit\",\n            day: \"2-digit\",\n            hour: \"2-digit\",\n            minute: \"2-digit\",\n            second: \"2-digit\",\n            hour12: false\n        });\n\n        const energy = (doc.energy >= 0 && doc.energy < 10000) ? doc.energy : 0;\n\n        labels.push(time);\n        energyValues.push(energy);\n        originalTimestamps.push(originalTimestamp);\n    }\n});\n\nmsg.payload = [\n    {\n        series: [\"Energy\"],\n        data: [energyValues],\n        labels: labels,\n        originalTimestamps: originalTimestamps\n    }\n];\n\nmsg.topic = \"Energy\";\nmsg.ui_control = { options: { responsive: true } };\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 540,
+        "wires": [
+            [
+                "c4e8c99ed560f2ad"
+            ]
+        ]
+    },
+    {
+        "id": "f067c4ba1c703eae",
+        "type": "function",
+        "z": "18feed72f7fc5d88",
+        "name": "function 4",
+        "func": "let data = msg.payload;\nlet labels = [], powerValues = [], originalTimestamps = [];\n\ndata.forEach(doc => {\n    if (doc.timestamp && doc.power !== undefined) {\n        const originalTimestamp = doc.timestamp;\n        //const time = new Date(originalTimestamp).toLocaleTimeString(\"en-US\", { hour12: false });\n                const time = new Date(originalTimestamp).toLocaleString(\"en-US\", {\n            year: \"numeric\",\n            month: \"2-digit\",\n            day: \"2-digit\",\n            hour: \"2-digit\",\n            minute: \"2-digit\",\n            second: \"2-digit\",\n            hour12: false\n        });\n\n        const power = (doc.power >= 0 && doc.power < 10000) ? doc.power : 0;\n\n        labels.push(time);\n        powerValues.push(power);\n        originalTimestamps.push(originalTimestamp);\n    }\n});\n\nmsg.payload = [\n    {\n        series: [\"Power\"],\n        data: [powerValues],\n        labels: labels,\n        originalTimestamps: originalTimestamps\n    }\n];\n\nmsg.topic = \"Power\";\nmsg.ui_control = { options: { responsive: true } };\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 580,
+        "wires": [
+            [
+                "7a6120cce1f78a39"
+            ]
+        ]
+    },
+    {
+        "id": "4ba86060f46a2142",
+        "type": "ui_chart",
+        "z": "18feed72f7fc5d88",
+        "name": "Voltage",
+        "group": "d03f813c6fcf2ead",
+        "order": 1,
+        "width": "19",
+        "height": "4",
+        "label": "Voltage (V)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "D/M",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "300",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1480,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cc1e9e222c72bc5e",
+        "type": "function",
+        "z": "18feed72f7fc5d88",
+        "name": "function 6",
+        "func": "let data = msg.payload;\nlet labels = [], voltageValues = [], originalTimestamps = [];\n\ndata.forEach(doc => {\n    if (doc.timestamp && doc.voltage !== undefined) {\n        const originalTimestamp = doc.timestamp;\n       // const time = originalTimestamp;\n               const time = new Date(originalTimestamp).toLocaleString(\"en-US\", {\n            year: \"numeric\",\n            month: \"2-digit\",\n            day: \"2-digit\",\n            hour: \"2-digit\",\n            minute: \"2-digit\",\n            second: \"2-digit\",\n            hour12: false\n        });\n\n        const voltage = (doc.voltage > 0 && doc.voltage < 1000) ? doc.voltage : 0;\n\n        labels.push(time);\n        voltageValues.push(voltage);\n        originalTimestamps.push(originalTimestamp);\n    }\n});\n\n// Structured like your friend's format, with added originalTimestamps\nmsg.payload = [\n    {\n        series: [\"Voltage\"],\n        data: [voltageValues],\n        labels: labels,\n        originalTimestamps: originalTimestamps\n    }\n];\n\nmsg.topic = \"Voltage\";\nmsg.ui_control = { options: { responsive: true } };\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 460,
+        "wires": [
+            [
+                "4ba86060f46a2142",
+                "07be1079d96c3014"
+            ]
+        ]
+    },
+    {
+        "id": "e00b5c36e10b90c7",
+        "type": "ui_chart",
+        "z": "18feed72f7fc5d88",
+        "name": "Current",
+        "group": "d03f813c6fcf2ead",
+        "order": 2,
+        "width": "19",
+        "height": "4",
+        "label": "Current (A)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "D/M",
+        "interpolate": "bezier",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "80",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#30b31e",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1480,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c4e8c99ed560f2ad",
+        "type": "ui_chart",
+        "z": "18feed72f7fc5d88",
+        "name": "Energy",
+        "group": "d03f813c6fcf2ead",
+        "order": 4,
+        "width": "19",
+        "height": "4",
+        "label": "Energy (kWh)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "D/M",
+        "interpolate": "step",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "120",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#e4d20c",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1480,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7a6120cce1f78a39",
+        "type": "ui_chart",
+        "z": "18feed72f7fc5d88",
+        "name": "Power",
+        "group": "d03f813c6fcf2ead",
+        "order": 3,
+        "width": "19",
+        "height": "4",
+        "label": "Power (W)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "D/M",
+        "interpolate": "step",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "10000",
+        "removeOlder": "30",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#de1b56",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1470,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "07be1079d96c3014",
+        "type": "debug",
+        "z": "18feed72f7fc5d88",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 820,
+        "wires": []
+    },
+    {
+        "id": "a30e8919f81e6826",
+        "type": "ui_spacer",
+        "z": "18feed72f7fc5d88",
+        "name": "spacer",
+        "group": "d03f813c6fcf2ead",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "cfc3b8c14cb1484b",
+        "type": "ui_spacer",
+        "z": "18feed72f7fc5d88",
+        "name": "spacer",
+        "group": "d03f813c6fcf2ead",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "dashboardGroup",
+        "type": "ui_group",
+        "name": "LIVE Meater",
+        "tab": "dashboardTab",
+        "order": 1,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "7a8d1c9c79f9c033",
+        "type": "mongodb3",
+        "uri": "mongodb+srv://ishara441tharindu:200031001229@cluster0.gfq4lgk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+        "name": "",
+        "options": "",
+        "parallelism": -1
+    },
+    {
+        "id": "54e6f01a3c8e7a6b",
+        "type": "mongodb",
+        "hostname": "cluster0.gfq4lgk.mongodb.net",
+        "topology": "dnscluster",
+        "connectOptions": "",
+        "port": 27017,
+        "db": "test",
+        "name": "MongoDB Atlas"
+    },
+    {
+        "id": "d914bf28fc662082",
+        "type": "ui_group",
+        "name": "Predictions",
+        "tab": "dashboardTab",
+        "order": 3,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4b01fda7e23e1683",
+        "type": "ui_group",
+        "name": "Cost Prediction",
+        "tab": "dashboardTab",
+        "order": 4,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d03f813c6fcf2ead",
+        "type": "ui_group",
+        "name": "Statistical Summary Table",
+        "tab": "dashboardTab",
+        "order": 2,
+        "disp": true,
+        "width": "19",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "dashboardTab",
+        "type": "ui_tab",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
